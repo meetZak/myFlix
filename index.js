@@ -1,111 +1,27 @@
 // Load required modules and call function app.
-  const express = require('express');
-        bodyParser = require('body-parser');
-        uuid = require('uuid');
-  
-  const app = express();
-  const morgan = require('morgan');
-        fs = require('fs');
-  const path = require ('path');
+const bodyParser = require("body-parser");
+const express = require("express");
+const app = express();
+const uuid = require("uuid");
+const morgan = require("morgan");
+const fs = require("fs");
+const path = require("path");
+const mongoose = require('mongoose');
+const Models = require('./models.js');
 
-// Integrating Mongoose to allow REST API to perform CRUD.
-  const mongoose = require('mongoose');
-  const Models = require ('./models.js');
- 
+const Movies = Models.Movie;
+const Users = Models.User;
 
-// Creation of variables to call databases.
-  const Movies = Models.Movie;
-  const Users = Models.User;
-  const Genres = Models.Genre;
-  const Directors = Models.Director;    
+//Integrating Mongoose with RESTAPI cfDB is the name od Database with movies and users
+mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Method allowing Mongoose to connect to that database so it can perform CRUD operations .
-  mongoose.connect ('mongodb://localhost:27017/cfDB',
- {useNewUrlParser:true,useUnifiedTopology:true});
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// We need to enable parsing json object. This is adding a piece of middleware.
-  app.use (bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended:true}));
-  app.use(express.static('public'));
-
-
-//Define an array of users and movies with couple of properties. 
-let users = [
-  {
-    "id": "1.1",
-    "name": "Kim",
-    "favoriteMovie": []
-  },
-  {
-    "id": "1.2",
-    "name": "Sarah",
-    "favoriteMovie": ["Black Panther: Wakanda Forever"],
-  }
-];
-
-
-
-let movies = [
-  {
-    "title":"Jurassic World",
-    "description":"American science fiction action film",
-    "release":"2015",
-    "genre":{
-      "name":"science fiction",
-      "description":"genre description"
-    },
-
-    "director":{
-      "name":"Colin Trevorrow",
-      "bio":"placeholder",
-      "birth":"1976"
-
-    },
-    
-      "imageURL":"https://www.amazon.com/Jurassic-World/s?k=Jurassic+World",
-      "feature":false
-  },
-  {
-    "title":"Gladiator",
-    "description":"Gladiator is a 2000 epic historical drama film directed by Ridley Scott and written by David Franzoni, John Logan, and William Nicholson.",
-    "release":"2000",
-    "genre":{
-      "name":"historic drama",
-      "description":"placeholder"
-    },
-
-    "director":{
-      "name":"	Ridley Scott",
-      "bio":"placeholder",
-      "birth":"1937"
-
-    },
-    
-      "imageURL":"https://www.amazon.com/Gladiator-Russell-Crowe/dp/B00470TOV0",
-      "feature":false
-  },
-  {
-    "title":"Black Panther: Wakanda Forever",
-    "description":"Black Panther is a 2018 American superhero film based on the Marvel Comics character of the same name.",
-    "release":"2022",
-    "genre":{
-      "name":"action",
-      "description":"genre description"
-    },
-
-    "director":{
-      "name":"Ryan Coogler",
-      "bio":"placeholder",
-      "birth":"1986"
-
-    },
-    
-      "imageURL":"https://www.amazon.com/Black-Panther-Wakanda-Forever-Feature/dp/B0BRYB43MG",
-      "feature":false
-  },
- 
-  ]
+app.use(morgan('common', {stream: accessLogStream}));
+app.use(express.static('public'));
 
   // default text response when at/
   app.get('/', (req, res) => {
@@ -214,34 +130,25 @@ app.get('/users/:Username', (req, res) => {
     });
 
 
-/* PUT: UPDATE user info by username using MONGOOSE */
-app.put('/users/:Username', (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
-    {
-      Username: req.body.Username,
-      Password: req.body.Password,
-      Email: req.body.Email,
-      Birthday: req.body.Birthday
-    },
-  },
-  { new: true }, // This line makes sure that the updated document is returned
-  (err, updatedUser) => {
-    if(err) {
-      console.error(err);
-      res.status(500).send("Error: " + err);
-    } else {
-      res.json(updatedUser);
+    // Update a user's info, by username
+    app.put('/users/:Username', (req, res) => {
+     Users.findOneAndUpdate({ Username: req.params.Username }, req.body, { new: true })
+    .then(updatedUser => {
+    res.status(200).json(updatedUser);
+    })
+    .catch(error => {
+    res.status(500).json({ error: error.message });
+    });
     }
-  });
-});
-
+    );
+     
 
 /* POST: allow users to add a movie to their favourites with MONGOOSE  */
-app.post('/users/:Username/:MovieID', (req, res) => {
+app.post('/users/:Username/movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
-    $push: { FavoriteMovies: req.params.MovieID }
-  },
-  { new: true }, // This line makes sure that the updated document is returned
+     $push: { FavoriteMovies: req.params.MovieID }
+   },
+   { new: true }, // This line makes sure that the updated document is returned
   (err, updatedUser) => {
     if (err) {
       console.error(err);
@@ -269,6 +176,11 @@ app.delete('/users/:Username', (req, res) => {
     });
 });
 
+// Access documentation.html using express.static.
+app.get('/documentation', (req, res) => {                  
+  res.sendFile('public/documentation.html', { root: __dirname });
+  });
+
  // created code that can handle unanticipated errors.
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -276,7 +188,7 @@ app.use((err, req, res, next) => {
 }); 
  
 
-// listen for requests
+// listen on port.
 app.listen(8080, () =>{
   console.log('Your app is listening on port 8080.');
 });
