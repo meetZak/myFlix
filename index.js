@@ -20,6 +20,11 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Importing auth.js and requiring Passport Module into the project.
+let auth = require ('./auth') (app);
+const passport = require ('passport');
+                 require ('./passport');
+
 app.use(morgan('common', {stream: accessLogStream}));
 app.use(express.static('public'));
 
