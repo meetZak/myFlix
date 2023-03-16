@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Importing auth.js and requiring Passport Module into the project.
 let auth = require ('./auth') (app);
 const passport = require ('passport');
-                 require ('./passport');
+require ('./passport');
 
 app.use(morgan('common', {stream: accessLogStream}));
 app.use(express.static('public'));
@@ -33,34 +33,8 @@ app.use(express.static('public'));
     res.send('Welcome to MyFlix Movie App!');
   });
 
-// Handling Get request for all users with Mongoose.
-  app.get('/users', (req, res) => {
-    Users.find()
-      .then((users) => {
-        res.status(201).json(users);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-  });
-
-  // Handling Get request for a specific user by username with Mongoose.
-
-app.get('/users/:Username', (req, res) => {
-  Users.findOne({ Username: req.params.Username })
-    .then((users) => {
-      res.status(201).json(users);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
-
-
 //Handling  get request to get list of all movies with Mongoose.
-  app.get('/movies', (req, res) => {
+  app.get('/movies',passport.authenticate ('jwt',{session:false}), (req, res) => {
     Movies.find()
       .then((movies) => {
         res.json(movies);
@@ -72,10 +46,10 @@ app.get('/users/:Username', (req, res) => {
   });
 
 //Handling Http get request to get specific  movie by title with Mongoose.
-  app.get('/movies/:title', (req, res) => {
+  app.get('/movies/:title', passport.authenticate('jwt',{session:false}),(req, res) => {
     Movies.findOne({ Title: req.params.title })
       .then((movie) => {
-        res.json(movie);
+        res.status(201).json(movie);
       })
       .catch((err) => {
         console.error(err);
@@ -83,7 +57,7 @@ app.get('/users/:Username', (req, res) => {
       });
   });
 //Handling  get request to get specific movie by genre with Mongoose.
-  app.get('/movies/genre/:genreName', (req, res) => {
+  app.get('/movies/genre/:Name',passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.findOne({ 'Genre.Name': req.params.genreName })
       .then((movie) => {
         res.status(201).json(movie.Genre);
@@ -95,7 +69,7 @@ app.get('/users/:Username', (req, res) => {
   });
  
 //Handling  get request to get specific movie by director with Mongoose.
-  app.get('/movies/director/:directorName', (req, res) => {
+  app.get('/movies/director/:directorName',passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.findOne({ 'Director.Name': req.params.directorName })
       .then((movie) => {
         res.status(201).json(movie.Director);
@@ -106,8 +80,33 @@ app.get('/users/:Username', (req, res) => {
       });
   });
 
+// Handling Get request for all users with Mongoose.
+app.get('/users',passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.find()
+    .then((users) => {
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
+// Handling Get request for a specific user by username with Mongoose.
+
+app.get('/users/:Username',passport.authenticate('jwt', { session: false }), (req, res) => {
+Users.findOne({ Username: req.params.Username })
+  .then((users) => {
+    res.status(201).json(users);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
+});
+
 //  Post Requests to allow new users to register with Mongoose.
-    app.post('/users', (req, res) => {
+    app.post('/users',passport.authenticate('jwt', { session: false }), (req, res) => {
       const newUser = req.body;
     Users.findOne({ Username: req.body.Username })
       .then((user) => {
@@ -136,7 +135,7 @@ app.get('/users/:Username', (req, res) => {
 
 
     // Update a user's info, by username
-    app.put('/users/:Username', (req, res) => {
+    app.put('/users/:Username',passport.authenticate('jwt', { session: false }), (req, res) => {
      Users.findOneAndUpdate({ Username: req.params.Username }, req.body, { new: true })
     .then(updatedUser => {
     res.status(200).json(updatedUser);
@@ -149,7 +148,7 @@ app.get('/users/:Username', (req, res) => {
      
 
 /* POST: allow users to add a movie to their favourites with MONGOOSE  */
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }),(req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
      $push: { FavoriteMovies: req.params.MovieID }
    },
@@ -166,7 +165,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 
 
 // Delete a user by username
-app.delete('/users/:Username', (req, res) => {
+app.delete('/users/:Username',passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
