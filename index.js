@@ -106,7 +106,7 @@ Users.findOne({ Username: req.params.Username })
 });
 
 //  Post Requests to allow new users to register with Mongoose.
-    app.post('/users',passport.authenticate('jwt', { session: false }), (req, res) => {
+    app.post('/users', (req, res) => {
       const newUser = req.body;
     Users.findOne({ Username: req.body.Username })
       .then((user) => {
