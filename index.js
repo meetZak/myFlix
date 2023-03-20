@@ -9,6 +9,8 @@ const path = require("path");
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
+
+
 const Movies = Models.Movie;
 const Users = Models.User;
 
@@ -17,16 +19,21 @@ mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useU
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 // Importing auth.js and requiring Passport Module into the project.
-let auth = require ('./auth') (app);
+const auth = require ('./auth') (app);
 const passport = require ('passport');
 require ('./passport');
 
 app.use(morgan('common', {stream: accessLogStream}));
 app.use(express.static('public'));
+app.use (morgan ('common', {
+  stream:fs.createWriteStream('./log.txt.log', {flags:'a'})
+}));
+app.use (morgan('dev'));
+
 
   // default text response when at/
   app.get('/', (req, res) => {
@@ -81,7 +88,7 @@ app.use(express.static('public'));
   });
 
 // Handling Get request for all users with Mongoose.
-app.get('/users',passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/users', (req, res) => {
   Users.find()
     .then((users) => {
       res.status(201).json(users);
@@ -106,32 +113,31 @@ Users.findOne({ Username: req.params.Username })
 });
 
 //  Post Requests to allow new users to register with Mongoose.
-    app.post('/users', (req, res) => {
-      const newUser = req.body;
-    Users.findOne({ Username: req.body.Username })
-      .then((user) => {
-        if (user) {
-          return res.status(400).send(req.body.Username + 'already exists');
-        } else {
-          Users
-            .create({
-              Username: req.body.Username,
-              Password: req.body.Password,
-              Email: req.body.Email,
-              Birthday: req.body.Birthday
-            })
-            .then((user) =>{res.status(201).json(user) })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          })
-        }
+app.post('/users',  (req, res) => {
+  Users.findOne({ Username: req.body.Username })
+  .then((user) => {
+    if (user) {
+      return res.status(400).send(req.body.Username + ' already exists');
+    } else {
+      Users
+      .create({
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday
       })
+      .then((user) =>{res.status(201).json(user) })
       .catch((error) => {
         console.error(error);
         res.status(500).send('Error: ' + error);
-      });
-    });
+      })
+    }
+  })
+  .catch((error) => {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  });
+});
 
 
     // Update a user's info, by username
@@ -165,7 +171,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
 
 
 // Delete a user by username
-app.delete('/users/:Username',passport.authenticate('jwt', { session: false }), (req, res) => {
+app.delete('/users/:Username', (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
