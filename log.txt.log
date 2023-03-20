@@ -1,0 +1,4 @@
+::1 - - [20/Mar/2023:19:51:40 +0000] "GET /users HTTP/1.1" 201 1366
+::1 - - [20/Mar/2023:20:21:04 +0000] "GET /users HTTP/1.1" 201 1366
+::1 - - [20/Mar/2023:20:23:59 +0000] "POST /users HTTP/1.1" 201 172
+::1 - sproutABC [20/Mar/2023:20:31:20 +0000] "POST /router/login?Username=sproutABC&Password=apple123 HTTP/1.1" 404 152

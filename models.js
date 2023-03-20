@@ -1,4 +1,3 @@
-
 // Importing  Mongoose package into models.js file.
 const mongoose = require('mongoose');
 
