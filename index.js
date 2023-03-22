@@ -7,7 +7,7 @@ const morgan = require("morgan");
 const fs = require("fs");
 const path = require("path");
 const mongoose = require('mongoose');
-const Models = require('./models.js');
+const Models = require('./models');
 
 
 
@@ -22,11 +22,6 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
-// Importing auth.js and requiring Passport Module into the project.
-const auth = require ('./auth') (app);
-const passport = require ('passport');
-require ('./passport');
-
 app.use(morgan('common', {stream: accessLogStream}));
 app.use(express.static('public'));
 app.use (morgan ('common', {
@@ -34,6 +29,10 @@ app.use (morgan ('common', {
 }));
 app.use (morgan('dev'));
 
+// Importing auth.js and requiring Passport Module into the project.
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 
   // default text response when at/
   app.get('/', (req, res) => {
@@ -88,7 +87,7 @@ app.use (morgan('dev'));
   });
 
 // Handling Get request for all users with Mongoose.
-app.get('/users', (req, res) => {
+app.get('/users',passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.find()
     .then((users) => {
       res.status(201).json(users);
