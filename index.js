@@ -1,40 +1,34 @@
 // Load required modules and call function app.
-const bodyParser = require("body-parser");
-const express = require("express");
-const app = express();
-const uuid = require("uuid");
-const morgan = require("morgan");
-const fs = require("fs");
-const path = require("path");
-const mongoose = require('mongoose');
-const Models = require('./models');
+    const bodyParser = require("body-parser");
+    const express = require("express");
+    const mongoose = require('mongoose');
+    const Models = require('./models.js');
+    const uuid = require("uuid");
+    const morgan = require("morgan");
+    const fs = require("fs");
+    const path = require("path");
 
 
+    const Movies = Models.Movie;
+    const Users = Models.User;
 
-const Movies = Models.Movie;
-const Users = Models.User;
-
-//Integrating Mongoose with RESTAPI cfDB is the name od Database with movies and users
-mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
-
-app.use(bodyParser.json()); 
-app.use(bodyParser.urlencoded({ extended: true })); 
-
-app.use(morgan('common', {stream: accessLogStream}));
-app.use(express.static('public'));
-app.use (morgan ('common', {
-  stream:fs.createWriteStream('./log.txt.log', {flags:'a'})
-}));
-app.use (morgan('dev'));
+    const app = express();
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
 
 // Importing auth.js and requiring Passport Module into the project.
-let auth = require('./auth')(app);
-const passport = require('passport');
-require('./passport');
+    let auth = require('./auth')(app);
+    const passport = require ('passport');
+    require ('./passport');
 
-  // default text response when at/
+//Integrating Mongoose with RESTAPI cfDB is the name od Database with movies and users
+    mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+    const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+     
+    app.use(morgan('common', {stream: accessLogStream}));
+    app.use(express.static('public'));
+
+ // default text response when at/
   app.get('/', (req, res) => {
     res.send('Welcome to MyFlix Movie App!');
   });
@@ -87,7 +81,7 @@ require('./passport');
   });
 
 // Handling Get request for all users with Mongoose.
-app.get('/users',passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/users', (req, res) => {
   Users.find()
     .then((users) => {
       res.status(201).json(users);
@@ -191,9 +185,9 @@ app.get('/documentation', (req, res) => {
   });
 
  // created code that can handle unanticipated errors.
-app.use((err, req, res, next) => {
+ app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something went wrong!');
+  res.status(500).send('Something broke!');
 }); 
  
 

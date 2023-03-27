@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 
 // Defining Schema for the movies collection
-let moviesSchema = mongoose.Schema ({
+let movieSchema = mongoose.Schema ({
     Title: { type:String, required:true},
     Description:{ type: String , required: true},
     Genre:{
@@ -30,7 +30,7 @@ let userSchema = mongoose.Schema ({
 });
 
 //Creating models using the schemas.
-let Movie = mongoose.model ('Movie',moviesSchema);
+let Movie = mongoose.model ('Movie',movieSchema);
 let User = mongoose.model ('User',userSchema);
 
 // Exporting the models in order to import in Index.js file.
