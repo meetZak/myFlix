@@ -37,7 +37,8 @@
     require ('./passport');
 
 //Integrating Mongoose with RESTAPI cfDB is the name od Database with movies and users
-  mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+/*   mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });*/
+mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
   const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
      
     app.use(morgan('common', {stream: accessLogStream}));
