@@ -40,4 +40,4 @@ module.exports = (router) => {
 
 
 
-/* mongoimport --uri mongodb+srv://myFlixDBadmin:computer123@myflixdb.lvqzjxg.mongodb.net/myFlixDB --collection movies --type json --file ../exported_collections/movies.json */ 
+/*  mongoimport --uri mongodb+srv://myFlixDBadmin:computer123@myflixdb.lvqzjxg.mongodb.net/myFlixDB --collection movies --type json --file ../exported_collections/movies.json  */
