@@ -97,7 +97,7 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
   });
 
 // Handling Get request for all users with Mongoose.
-app.get('/users', (req, res) => {
+app.get('/users',passport.authenticate('jwt',{session:false}), (req, res) => {
   Users.find()
     .then((users) => {
       res.status(201).json(users);
