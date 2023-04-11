@@ -21,7 +21,7 @@
 
 // Importing auth.js and requiring Passport Module into the project.
     const cors = require('cors');
-    let allowedOrigins = ['http://localhost:8080'];
+    let allowedOrigins = ['http://localhost:8080','https://zaflix.herokuapp.com/'];
     app.use(cors({
       origin: (origin, callback) => {
         if(!origin) return callback(null, true);
@@ -38,8 +38,8 @@
 
 //Integrating Mongoose with RESTAPI cfDB is the name od Database with movies and users
 /*   mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });*/
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-  const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
      
     app.use(morgan('common', {stream: accessLogStream}));
     app.use(express.static('public'));
