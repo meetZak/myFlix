@@ -50,7 +50,7 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
   });
 
 //Handling  get request to get list of all movies with Mongoose.
-  app.get('/movies',passport.authenticate ('jwt',{session:false}), (req, res) => {
+  app.get('/movies',(req, res) => {
     Movies.find()
       .then((movies) => {
         res.json(movies);
