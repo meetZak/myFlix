@@ -21,7 +21,8 @@
 
 // Importing auth.js and requiring Passport Module into the project.
     const cors = require('cors');
-    let allowedOrigins = ['http://localhost:8080','https://zaflix.herokuapp.com/','http://localhost:1234','https://myflixmovie-app.netlify.app/login'];
+    app.use(cors());
+   /*  let allowedOrigins = ['http://localhost:8080','https://zaflix.herokuapp.com/','http://localhost:1234','https://myflixmovie-app.netlify.app/login'];
     app.use(cors({
       origin: (origin, callback) => {
         if(!origin) return callback(null, true);
@@ -31,7 +32,7 @@
         }
         return callback(null, true);
       }
-    }));
+    })); */
    let auth = require('./auth')(app);
     const passport = require ('passport');
     require ('./passport');
