@@ -1,8 +1,8 @@
-`#`myFlix
+# myFlix
 
 ---
 
-`##`Objective
+## Objective
 
 ---
 
@@ -14,11 +14,11 @@
 - https://github.com/abuyusr/myFlix-client.git
 - https://github.com/abuyusr/myFlix-Angular-client.git
 
-`##`Description
+## Description
 
 ---
 
-`###`Features
+### Features
 
 - Return a list of ALL movies to the user
 - Return data (description, genre, director, image URL, whether it’s featured or not) about single movie by title to the user
@@ -30,7 +30,7 @@
 - Allow users to remove a movie from their list of favorites
 - Allow existing users to deregister
 
-`##`Getting Started
+## Getting Started
 
 ---
 
@@ -42,7 +42,7 @@
 - Express
 - MongoDB
 
-`##`Development Environment
+## Development Environment
 
 ---
 
@@ -52,7 +52,7 @@
 - Run npm start to connect to localhost server (default: 8080)
 - API endpoints can be tested using Postman
 
-`##`Dependencies
+## Dependencies
 
 ---
 
