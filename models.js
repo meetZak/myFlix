@@ -1,47 +1,58 @@
-// Importing  Mongoose package into models.js file.
 const mongoose = require('mongoose');
-const bcrypt = require ('bcrypt');
+const bcrypt = require('bcrypt');
 
-
-// Defining Schema for the movies collection
-let movieSchema = mongoose.Schema ({
-    Title: { type:String, required:true},
-    Description:{ type: String , required: true},
-    Genre:{
+// defines movieSchema format to be used in mongoDB 
+let movieSchema = mongoose.Schema({
+    Title: {type: String, required: true},
+    Description: {type: String, required: true},
+    Genre: {
         Name: String,
         Description: String
     },
     Director: {
         Name: String,
-        Bio: String
+        Bio: String,
+        Birthyear: Date,
+        Deathyear: Date
     },
-    Actors: [String],
+    Release: Date,
     ImagePath: String,
-    Featured: Boolean
+    Featured: Boolean 
 });
 
-// Defining Schema for the users collection.
-let userSchema = mongoose.Schema ({
-    Username: { type: String, required:true},
-    Password: {type: String, required: true},
-    Email: {type: String, required: true},
+// defines userSchema format to be used in mongoDB
+let userSchema = mongoose.Schema({
+    Username: { type: String, required: true },
+    Password: { type: String, required: true },
+    Email: { type: String, required: true },
     Birthday: Date,
-    FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref:'Movie'}]
-
+    FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 });
 
-userSchema.statics.hashPassword = (password)=>{
-    return bcrypt.hashSync (password, 10);
+/**
+ * converts user password into hashed format using bcrypt.js
+ * @function hashPassword
+ * @param {string} password as input by user
+ * @returns {string} hashed @password of user input
+ */
+userSchema.statics.hashPassword = (password) => {
+    return bcrypt.hashSync(password, 10);
 };
 
-userSchema.methods.validatePassword = function (password) {
+/**
+ * validates user password by comparing it with the stored hashed password
+ * @function validatePassword
+ * @param {string} password to be validated
+ * @returns {string} validated @password
+ */
+userSchema.methods.validatePassword = function(password) {
     return bcrypt.compareSync(password, this.Password);
 };
+  
+// creates models based on defined Schemas
+let Movie = mongoose.model('Movie', movieSchema);
+let User = mongoose.model('User', userSchema);
 
-//Creating models using the schemas.
-let Movie = mongoose.model ('Movie',movieSchema);
-let User = mongoose.model ('User',userSchema);
-
-// Exporting the models in order to import in Index.js file.
+// export defined modules so they can be used
 module.exports.Movie = Movie;
 module.exports.User = User;

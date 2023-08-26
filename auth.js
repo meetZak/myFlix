@@ -1,43 +1,48 @@
-const jwtSecret = 'your_jwt_secret'; // This has to be the same key used in the JWTStrategy
+// This has to be the same key used in the JWTStrategy 
+const jwtSecret = 'your_jwt_secret';
 
 const jwt = require('jsonwebtoken'),
   passport = require('passport');
 
-require('./passport'); // Your local passport file
+// my local passport file 
+require('./passport');
 
-
+/**
+ * Allows a JWT token to be generated from user data
+ * @param {object} user in which JWT should be generated for
+ * @returns {string} - generated JWT token
+ */
 let generateJWTToken = (user) => {
-  return jwt.sign(user, jwtSecret, {
-    subject: user.Username, // This is the username you’re encoding in the JWT
-    expiresIn: '7d', // This specifies that the token will expire in 7 days
-    algorithm: 'HS256' // This is the algorithm used to “sign” or encode the values of the JWT
-  });
+    return jwt.sign(user, jwtSecret, {
+        subject: user.Username, // this is the username encoded in in the JWT 
+        expiresIn: '7d', // specifies that the token will expire in 7 days 
+        algorithm: 'HS256' // algorithm used to “sign” or encode the values of the JWT 
+    });
 }
 
-
-/* POST login. */
+/**
+ * /login endpoint for exisiting users implemented by POST method
+ * authentication provided by passport
+ * JWT token is implemented upon successful authentication
+ * @param {object} router - provided by Express router
+ * @returns {object} - JOSN object holding user data and token
+ */
 module.exports = (router) => {
-  router.post('/login', (req, res) => {
-    passport.authenticate('local', { session: false }, (error, user, info) => {
-      if (error || !user) {
-        return res.status(400).json({
-          message: ' not right',
-          error
-        });
-      }
-      req.login(user, { session: false }, (error) => {
-        if (error) {
-          res.send(error);
+    router.post('/login', (req, res) => {
+      passport.authenticate('local', { session: false }, (error, user, info) => {
+        if (error || !user) {
+            return res.status(400).json({
+                message: 'Something is not right',
+                user: user
+            });
         }
-        let token = generateJWTToken(user.toJSON());
-        return res.json({user, token});
-      });
-    })(req, res);
-  });
-} 
-
-
-
-
-
-/*  mongoimport --uri mongodb+srv://myFlixDBadmin:computer123@myflixdb.lvqzjxg.mongodb.net/myFlixDB --collection movies --type json --file ../exported_collections/movies.json  */
+        req.login(user, { session: false }, (error) => {
+            if (error) {
+                res.send(error);
+            }
+            let token = generateJWTToken(user.toJSON());
+            return res.json({ user, token });
+        });
+      })(req, res);
+    });
+}

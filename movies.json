@@ -1,0 +1,181 @@
+{
+  "_id": {
+    "$oid": "6408a3a7c58574ae7d153dbe"
+  },
+  "Title": "Babylon",
+  "Description": "Babylon premiered at the Samuel Goldwyn Theater in Los Angeles on November 14, 2022, and was released in the United States on December 23. The film polarized critics, who generally praised its cinematography, score, editing, production design, lead performances and themes, but were sharply divided on its graphic content and runtime.",
+  "Genre": {
+    "Name": "Comedi",
+    "Description": "Comedy is a genre of film in which the main emphasis is on humor. These films are designed to make the audience laugh through amusement and most often work by exaggerating characteristics for humorous effect."
+  },
+  "Director": {
+    "Name": "Damien Chazelle ",
+    "Bio": "Damien Sayre Chazelle is an American director and screenwriter. He was born in Providence, Rhode Island.",
+    "Birth": "1985-01-19"
+  },
+  "ImagePath": "https://www.imdb.com/title/tt10640346/mediaviewer/rm865155841/?ref_=tt_ov_i",
+  "Featured": true
+}
+{
+  "_id": {
+    "$oid": "6408a819c58574ae7d153dbf"
+  },
+  "Title": "Titanic",
+  "Description": "A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic",
+  "Genre": {
+    "Name": "Romance",
+    "Description": "Romance or romantic love is a feeling of love for, or a strong attraction towards another person, and the courtship behaviors undertaken by an individual to express those overall feelings and resultant emotions. "
+  },
+  "Director": {
+    "Name": "James Cameron",
+    "Bio": "James Francis Cameron was born on August 16, 1954 in Kapuskasing, Ontario, Canada. He moved to the United States in 1971. The son of an engineer, he majored in physics at California State University before switching to English, and eventually dropping out.",
+    "Birth": " August 16, 1954 "
+  },
+  "ImagePath": " https://www.imdb.com/title/tt0120338/mediaviewer/rm2647458304/?ref_=tt_ov_i",
+  "Feature": true,
+  "Bio": "Director James Cameron was originally born in France."
+}
+{
+  "_id": {
+    "$oid": "6408a9b7c58574ae7d153dc0"
+  },
+  "Title": "Your Place or Mine ",
+  "Description": "Two long-distance best friends change each other's lives when she decides to pursue a lifelong dream and he volunteers to keep an eye on her teenage son.",
+  "Genre": {
+    "Name": "Romance",
+    "Description": "Romance or romantic love is a feeling of love for, or a strong attraction towards another person, and the courtship behaviors undertaken by an individual to express those overall feelings and resultant emotions."
+  },
+  "Director": {
+    "Name": "Aline Brosh McKenna",
+    "Bio": "Aline Brosh McKenna was born on 2 August 1967 in France. She is a producer and writer,",
+    "Birth": "2 August 1967"
+  },
+  "ImagePath": "https://www.imdb.com/title/tt12823454/mediaviewer/rm1722301697/?ref_=tt_ov_i ",
+  "Feature": true
+}
+{
+  "_id": {
+    "$oid": "6408aca4c58574ae7d153dc1"
+  },
+  "Title": "Somebody I Used to Know ",
+  "Decription": "On a trip to her hometown, workaholic Ally reminisces with her ex Sean and starts to question everything about the person she's become. Things only get more confusing when she meets Cassidy",
+  "Genre": {
+    "Name": "Romance",
+    "Decription": "Romance or romantic love is a feeling of love for, or a strong attraction towards another person, and the courtship behaviors undertaken by an individual to express those overall feelings and resultant emotions."
+  },
+  "Director": {
+    "Name": "Dave Franco",
+    "Bio": "David John Franco was born in Palo Alto, California, to Betsy Franco, an author, and Douglas Eugene Franco, who ran a Silicon Valley business.",
+    "Birth": " 1985-06-12"
+  },
+  "ImagePath": "https://www.imdb.com/title/tt15333984/mediaviewer/rm1824995073/?ref_=tt_ov_i ",
+  "Feature": true
+}
+{
+  "_id": {
+    "$oid": "6408ae78c58574ae7d153dc2"
+  },
+  "Title": "The last of Us",
+  "Decription": "After a global pandemic destroys civilization, a hardened survivor takes charge of a 14-year-old girl who may be humanity's last hope.",
+  "Genre": {
+    "Name": "Romance",
+    "Description": "Romance or romantic love is a feeling of love for, or a strong attraction towards another person, and the courtship behaviors undertaken by an individual to express those overall feelings and resultant emotions."
+  },
+  "Director": {
+    "Name": "Neil Druckman",
+    "Bio": " Neil Druckmann is an Israeli-American writer, creative director, designer, and programmer who has been co-president of the video game developer Naughty Dog since 2020.",
+    "Birth": " December 5,1978"
+  },
+  "ImagePath": "https://www.imdb.com/title/tt3581920/mediaviewer/rm553794049/?ref_=tt_ov_i ",
+  "Feature": true
+}
+{
+  "_id": {
+    "$oid": "6408af9dc58574ae7d153dc3"
+  },
+  "Title": "Whiplash",
+  "Description": " A promising young drummer enrolls at a cut-throat music conservatory where his dreams of greatness are mentored by an instructor who will stop at nothing to realize a student's potential.",
+  "Genre": {
+    "Name": " Drama",
+    "Decription": "Drama is the specific mode of fiction represented in performance: a play, opera, mime, ballet, etc., performed in a theatre, or on radio or television.[1] Considered as a genre of poetry in general, the dramatic mode has been contrasted with the epic and the lyrical modes ever since Aristotle's Poetics."
+  },
+  "Director": {
+    "Name": " Damien Chazelle",
+    "Bio": "Damien Sayre Chazelle is an American director and screenwriter. He was born in Providence, Rhode Island.",
+    "Birth": "1985-01-19"
+  },
+  "ImagePath": " https://www.imdb.com/title/tt2582802/mediaviewer/rm1048725760/?ref_=tt_ov_i",
+  "Feature": true
+}
+{
+  "_id": {
+    "$oid": "6408b161c58574ae7d153dc4"
+  },
+  "Title": "Cocaine Bear",
+  "Description": "An oddball group of cops, criminals, tourists and teens converge on a Georgia forest where a huge black bear goes on a murderous rampage after unintentionally ingesting cocaine.",
+  "Genre": {
+    "Name": "Crime Film",
+    "Description": "Crime films, in the broadest sense, is a film genre inspired by and analogous to the crime fiction literary genre. Films of this genre generally involve various aspects of crime and its detection."
+  },
+  "Director": {
+    "Name": "Elizabeth Banks",
+    "Bio": "Elizabeth Banks was born Elizabeth Mitchell in Pittsfield, a small city in the Berkshires in western Massachusetts near the New York border, on February 10, 1974. She is the daughter of Anne Marie (Wallace), who worked in a bank, and Mark Phineas Mitchell, a factory worker.",
+    "Birth": "February 10,1974"
+  },
+  "ImagePath": "https://www.imdb.com/title/tt14209916/mediaviewer/rm184234241/?ref_=tt_ov_i",
+  "Feature": true
+}
+{
+  "_id": {
+    "$oid": "6408b2f2c58574ae7d153dc5"
+  },
+  "Title": "The Walking Dead",
+  "Description": "Sheriff Deputy Rick Grimes wakes up from a coma to learn the world is in ruins and must lead a group of survivors to stay alive.",
+  "Genre": {
+    "Name": "Crime Film",
+    "Description": "Crime films, in the broadest sense, is a film genre inspired by and analogous to the crime fiction literary genre. Films of this genre generally involve various aspects of crime and its detection."
+  },
+  "Director": {
+    "Name": "Frank Arpad Darabont",
+    "Bio": "Three-time Oscar nominee Frank Darabont was born in a refugee camp in 1959 in Montbeliard, France, the son of Hungarian parents who had fled Budapest during the failed 1956 Hungarian revolution. Brought to America as an infant, he settled with his family in Los Angeles and attended Hollywood High School.",
+    "Birth": "January 28, 1959"
+  },
+  "ImagePath": "https://www.imdb.com/title/tt1520211/mediaviewer/rm2446196481/?ref_=tt_ov_i",
+  "Feature": true
+}
+{
+  "_id": {
+    "$oid": "6408b903c58574ae7d153dc6"
+  },
+  "Title": "We have a Ghost",
+  "Description": "Finding a ghost named Ernest haunting their new home turns Kevin's family into overnight social media sensations. But when Kevin and Ernest investigate the mystery of Ernest's past, they become a target of the CIA.",
+  "Genre": {
+    "Name": "Horror",
+    "Description": "Horror is a film genre that seeks to elicit fear or disgust in its audience for entertainment purposes.Horror films often explore dark subject matter and may deal with transgressive topics or themes. Broad elements include monsters, apocalyptic events, and religious or folk beliefs. Cinematic techniques used in horror films have been shown to provoke psychological reactions in an audience."
+  },
+  "Director": {
+    "Name": " Christopher landon",
+    "Bio": "Christopher Landon was born on 27 February 1975 in Los Angeles, California, USA. He is a writer and producer, known for Freaky (2020), Paranormal Activity: The Marked Ones (2014) and Happy Death Day 2U (2019).",
+    "Birth": "February 27,1075"
+  },
+  "ImagePath": "https://www.imdb.com/title/tt7798604/?ref_=adv_li_tt",
+  "Feature": true
+}
+{
+  "_id": {
+    "$oid": "6408ba13c58574ae7d153dc7"
+  },
+  "Title": "Infinity Pool",
+  "Description": "James and Em Foster are enjoying an all-inclusive beach vacation in the fictional island of La Tolqa, when a fatal accident exposes the resort's perverse subculture of hedonistic tourism, reckless violence and surreal horrors.",
+  "Genre": {
+    "Name": "Horror",
+    "Description": "Horror is a film genre that seeks to elicit fear or disgust in its audience for entertainment purposes.Horror films often explore dark subject matter and may deal with transgressive topics or themes. Broad elements include monsters, apocalyptic events, and religious or folk beliefs. Cinematic techniques used in horror films have been shown to provoke psychological reactions in an audience."
+  },
+  "Director": {
+    "Name": "Brandon Cronenberg",
+    "Bio": "Brandon Cronenberg was born on 10 January 1980 in Toronto, Ontario, Canada. He is a director and writer, known for Possessor (2020), Antiviral (2012) and Please Speak Continuously and Describe Your Experiences as They Come to You (2019).",
+    "Birth": "1980"
+  },
+  "ImagePath": "https://www.imdb.com/title/tt10365998/?ref_=adv_li_tt",
+  "Feature": true
+}

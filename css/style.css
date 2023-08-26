@@ -1,5 +1,13 @@
-table, th, td {
-    border: 1px solid;
-   
-  }
-  
+.table, th, tr {
+    padding: 5px;
+    border: 1px solid #000000;
+    text-align: left;
+}
+
+.table {
+    width: 100%;
+}
+
+th {
+    height: 50px;
+}
