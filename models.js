@@ -19,6 +19,7 @@ let movieSchema = mongoose.Schema ({
     ImagePath: String,
     Featured: Boolean
 });
+
 // Defining Schema for the users collection.
 let userSchema = mongoose.Schema ({
     Username: { type: String, required:true},
@@ -40,6 +41,7 @@ userSchema.methods.validatePassword = function (password) {
 //Creating models using the schemas.
 let Movie = mongoose.model ('Movie',movieSchema);
 let User = mongoose.model ('User',userSchema);
+
 // Exporting the models in order to import in Index.js file.
 module.exports.Movie = Movie;
 module.exports.User = User;
