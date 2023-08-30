@@ -20,8 +20,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const { check, validationResult } = require ('express-validator');
 
 // Importing auth.js and requiring Passport Module into the project.
-const cors = require('cors');
-app.use(cors());
+//const cors = require('cors');
+//app.use(cors());
 /*   let allowedOrigins = ['http://localhost:8080','https://zaflix.herokuapp.com/','http://localhost:1234','https://myflixmovie-app.netlify.app/login'];
 app.use(cors({
   origin: (origin, callback) => {
@@ -33,6 +33,22 @@ app.use(cors({
     return callback(null, true);
   }
 }));  */
+//setup Cross-Origin-Resource-Sharing  
+const cors = require('cors');
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'https://zmovies.onrender.com/', 'http://localhost:4200', 'https://myflixmovie-app.netlify.app/movies', 'https://myflixmovie-app.netlify.app/profile', 'https://myflixmovie-app.netlify.app/director', 'https://myflixmovie-app.netlify.app/genre', 'https://myflixmovie-app.netlify.app/login', 'https://myflixmovie-app.netlify.app/register', 'https://myflixmovie-app.netlify.app/users', 'https://myflixmovie-app.netlify.app/users/:username', 'https://myflixmovie-app.netlify.app/users/:username/favorites', 'https://myflixmovie-app.netlify.app/users/:username/movies/:movieID', 'https://myflixmovie-app.netlify.app/users/:username/movies/:movieID/delete', 'https://myflixmovie-app.netlify.app/users/:username/update', 'https://myflixmovie-app.netlify.app/users/:username/delete', 'https://zmovies.onrender.com//movies', 'http://localhost:4200/movies','https://zaflix.herokuapp.com/', 'https://myflixmovie-app.netlify.app/login','https://zaflix.herokuapp.com/','https://myflixmovie-app.netlify.app/login'];
+
+app.use(cors({
+  origin: '*',
+ /*  
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) { // If a specific origin isn’t found on the list of allowed origins
+      let message = 'The CORS policy for this application does not allow access from origin ' + origin;
+      return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  } */
+}));
 let auth = require('./auth')(app);
 const passport = require ('passport');
 require ('./passport');
