@@ -138,6 +138,36 @@ res.status(500).send('Error: ' + err);
 });
 });
 
+//Adds a new movie to the database by filling out required information
+app.post('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+  const movie = await Movies.findOne({Title: req.body.Title})
+  if (movie) {
+    return res.status(400).send(req.body.Title + 'already exists');
+  } else {
+    const newMovie = await Movies.create({
+      Title: req.body.Title,
+      Description: req.body.Description,
+      Genre: {
+        Name: req.body.Genre.Name,
+        Description: req.body.Genre.Description
+      },
+      Director: {
+        Name: req.body.Director.Name,
+        Bio: req.body.Director.Bio,
+        Birth: req.body.Director.Birthyear
+      },
+      ImagePath: req.body.ImagePath,
+      Featured: req.body.Featured
+      
+    })
+      res.status(201).json(newMovie)
+  }
+} catch (error) {
+  console.error(error);
+  res.status(500).send('Error' + error);
+}
+});
 //  Post Requests to allow new users to register with Mongoose.
 app.post('/users',
 [
