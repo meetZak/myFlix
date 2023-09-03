@@ -176,37 +176,6 @@ res.status(500).json({ error: error.message });
 });
 }
 );
-
-app.post('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  try {
-  const movie = await Movies.findOne({Title: req.body.Title})
-  if (movie) {
-    return res.status(400).send(req.body.Title + 'already exists');
-  } else {
-    const newMovie = await Movies.create({
-      Title: req.body.Title,
-      Description: req.body.Description,
-      Genre: {
-        Name: req.body.Genre.Name,
-        Description: req.body.Genre.Description
-      },
-      Director: {
-        Name: req.body.Director.Name,
-        Bio: req.body.Director.Bio,
-        Birthyear: req.body.Director.Birthyear,
-        Deathyear: req.body.Director.Deathyear
-      },
-      ImagePath: req.body.ImagePath,
-      Featured: req.body.Featured,
-      Release: req.body.Release
-    })
-      res.status(201).json(newMovie)
-  }
-} catch (error) {
-  console.error(error);
-  res.status(500).send('Error' + error);
-}
-});
  
 
 /* POST: allow users to add a movie to their favourites with MONGOOSE  */
