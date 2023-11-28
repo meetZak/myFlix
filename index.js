@@ -27,7 +27,6 @@ const { S3Client, ListObjectsV2Command, PutObjectCommand } = require('@aws-sdk/c
 // Passing the region , endpoint URL and set another parameter
 const s3Client = new S3Client({
   region: 'us-east-1',
-  endpoint: 'http://localhost:4566',
   forcePathStyle: true
 })
 
@@ -41,7 +40,7 @@ listObjectsCmd = new ListObjectsV2Command(listObjectsParams)
 
 //creating an endpoint in Express that’s a passthrough to list the objects in a bucket
 app.get('/images', (req, res) => {
-  
+
   s3Client.send(new ListObjectsV2Command(listObjectsParams))
       .then((listObjectsResponse) => {
           res.send(listObjectsResponse)
