@@ -48,12 +48,36 @@ app.get('/images', (req, res) => {
 })
 
 //POST request sent to /images
+// app.post('/images', (req, res) => {
+//     const file = req.files.image
+//     const fileName = req.files.image.name
+//     const tempPath = `${UPLOAD_TEMP_PATH}/${fileName}`
+//     file.mv(tempPath, (err) => { res.status(500) })
+//   })
+const UPLOAD_TEMP_PATH = '/Users/zakaria/s3'; 
+
 app.post('/images', (req, res) => {
-    const file = req.files.image
-    const fileName = req.files.image.name
-    const tempPath = `${UPLOAD_TEMP_PATH}/${fileName}`
-    file.mv(tempPath, (err) => { res.status(500) })
-  })
+    const file = req.files.image;
+
+    if (!file) {
+        return res.status(400).send('No file uploaded.');
+    }
+
+    const fileName = file.name;
+    const tempPath = `${UPLOAD_TEMP_PATH}/${fileName}`;
+
+    file.mv(tempPath, (err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        // File successfully uploaded
+        res.status(200).send('File uploaded!');
+    });
+});
+
+
 
 
 // Importing auth.js and requiring Passport Module into the project.
@@ -73,6 +97,7 @@ app.use(cors());
 let auth = require('./auth')(app);
 const passport = require ('passport');
 const { S3 } = require("aws-sdk");
+const { error } = require("console");
 require ('./passport');
 
 //Integrating Mongoose with RESTAPI cfDB is the name od Database with movies and users
