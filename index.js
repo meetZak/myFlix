@@ -7,6 +7,8 @@ const uuid = require("uuid");
 const morgan = require("morgan");
 const fs = require("fs");
 const path = require("path");
+const fileUpload = require('express-fileupload')
+
 
 
 const Movies = Models.Movie;
@@ -19,31 +21,72 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Importing the express-validator library into file.
 const { check, validationResult } = require ('express-validator');
 
+// import a handful of classes from the AWS SDK: the S3 client, as well as commands to list and put objects.
+const { S3Client, ListObjectsV2Command, PutObjectCommand } = require('@aws-sdk/client-s3')
+
+// Passing the region , endpoint URL and set another parameter
+const s3Client = new S3Client({
+  region: 'us-east-1',
+  endpoint: 'http://localhost:4566',
+  forcePathStyle: true
+})
+
+
+//instantiating objects from the classes for individual commands.
+const listObjectsParams = {
+  Bucket: 'my-cool-local-bucket'
+}
+
+listObjectsCmd = new ListObjectsV2Command(listObjectsParams)
+
+//creating an endpoint in Express that’s a passthrough to list the objects in a bucket
+app.get('/images', (req, res) => {
+  listObjectsParams = {
+      Bucket: IMAGES_BUCKET
+  }
+  s3Client.send(new ListObjectsV2Command(listObjectsParams))
+      .then((listObjectsResponse) => {
+          res.send(listObjectsResponse)
+  })
+})
+
+//POST request sent to /images
+app.post('/images', (req, res) => {
+    const file = req.files.image
+    const fileName = req.files.image.name
+    const tempPath = `${UPLOAD_TEMP_PATH}/${fileName}`
+    file.mv(tempPath, (err) => { res.status(500) })
+  })
+
+
 // Importing auth.js and requiring Passport Module into the project.
 const cors = require('cors');
 app.use(cors());
-/*   let allowedOrigins = ['http://localhost:8080','https://zaflix.herokuapp.com/','http://localhost:1234','https://myflixmovie-app.netlify.app/login'];
-app.use(cors({
+  let allowedOrigins = ['http://localhost:8080','https://zaflix.herokuapp.com/','http://localhost:1234','https://myflixmovie-app.netlify.app/login','http://myflix-client.s3-website-us-east-1.amazonaws.com/login','http://myflix-client.s3-website-us-east-1.amazonaws.com/signup'];
+ app.use(cors({
   origin: (origin, callback) => {
     if(!origin) return callback(null, true);
     if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
-      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
-      return callback(new Error(message ), false);
+       let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+       return callback(new Error(message ), false);
     }
     return callback(null, true);
   }
-}));  */
+ }));  
 let auth = require('./auth')(app);
 const passport = require ('passport');
+const { S3 } = require("aws-sdk");
 require ('./passport');
 
 //Integrating Mongoose with RESTAPI cfDB is the name od Database with movies and users
 /*   mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });*/
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect( 'mongodb+srv://abuyahya:abuyusra@ourflixdb.aocjkw6.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true });
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
  
 app.use(morgan('common', {stream: accessLogStream}));
 app.use(express.static('public'));
+
+
 
 // default text response when at/
 app.get('/', (req, res) => {
@@ -249,7 +292,7 @@ app.get('/documentation', (req, res) => {
 res.sendFile('public/documentation.html', { root: __dirname });
 });
 
-// created code that can handle unanticipated errors.
+// created code that can handle unanticipated errors.cb
 app.use((err, req, res, next) => {
 console.error(err.stack);
 res.status(500).send('Something broke!');
@@ -261,3 +304,7 @@ const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
 console.log('Listening on Port ' + port);
 });
+
+// app.listen(port, () => {
+//   console.log(`Server is listening at http://localhost:${4566}`);
+// });
