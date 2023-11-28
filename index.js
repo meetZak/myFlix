@@ -34,16 +34,14 @@ const s3Client = new S3Client({
 
 //instantiating objects from the classes for individual commands.
 const listObjectsParams = {
-  Bucket: 'my-cool-local-bucket'
+  Bucket: 'ec2tos3bucket'
 }
 
 listObjectsCmd = new ListObjectsV2Command(listObjectsParams)
 
 //creating an endpoint in Express that’s a passthrough to list the objects in a bucket
 app.get('/images', (req, res) => {
-  listObjectsParams = {
-      Bucket: process.env.IMAGES_BUCKET
-  }
+  
   s3Client.send(new ListObjectsV2Command(listObjectsParams))
       .then((listObjectsResponse) => {
           res.send(listObjectsResponse)
