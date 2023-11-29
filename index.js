@@ -50,23 +50,13 @@ app.get('/images', (req, res) => {
 
 //POST request sent to /images
 app.post('/images', (req, res) => {
-  if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send('No files were uploaded.');
-  }
+  const file = req.files.image
+  const fileName = req.files.image.name
+  const tempPath = `${UPLOAD_TEMP_PATH}/${fileName}`
+  file.mv(tempPath, (err) => { res.status(500) })
 
-  const file = req.files.images;
-  const fileName = file.name;
-  const tempPath = `${UPLOAD_TEMP_PATH}/${fileName}`;
-  file.mv(tempPath, (err) => {
-      if (err) {
-          console.error(err);
-          return res.status(500).send('Internal Server Error');
-      }
-
-      // File successfully uploaded
-      res.status(200).send('File uploaded!');
-  });
-});
+  
+})
 
 
 
