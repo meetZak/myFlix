@@ -7,10 +7,7 @@ const uuid = require("uuid");
 const morgan = require("morgan");
 const fs = require("fs");
 const path = require("path");
-const fileUpload = require('express-fileupload');
-const aws = require ('aws-sdk');
-const multer = require ('multer');
-//const multerS3 = require ('multer-s3');
+const fileUpload = require('express-fileupload')
 
 
 
@@ -23,25 +20,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Importing the express-validator library into file.
 const { check, validationResult } = require ('express-validator');
-
-const s3 = new aws.S3 ({accesskeyID:"AKIA47RRR3CGSHABHBDM", secretAccessKey:"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", Bucket:"ec2tos3bucket"});
-const upload = multer ({
-  //  storage:multer ({
-  //   s3:s3,
-    Bucket:"ec2tos3bucket",
-    metadata : function (req, file , cb) {
-      console.log (file);
-      cb (null , {fieldName: file.originalname});
-    },
-     key : function (req , file , cb){
-      cb (null , file.originalname)
-     }
-   })
-//});
-
-app.post ('/upload', upload.single('photos'), function(req, res,next) {
-  res.send ({data: req.files,msg:'successfully uploaded' + req.files + 'files!'})
-})
 
 // import a handful of classes from the AWS SDK: the S3 client, as well as commands to list and put objects.
 const { S3Client, ListObjectsV2Command, PutObjectCommand } = require('@aws-sdk/client-s3')
@@ -111,7 +89,6 @@ let auth = require('./auth')(app);
 const passport = require ('passport');
 const { S3 } = require("aws-sdk");
 const { error } = require("console");
-//const multer = require("multer");
 require ('./passport');
 
 //Integrating Mongoose with RESTAPI cfDB is the name od Database with movies and users
