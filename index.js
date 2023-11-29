@@ -54,10 +54,9 @@ app.post('/images', (req, res) => {
       return res.status(400).send('No files were uploaded.');
   }
 
-  const file = req.files.image;
+  const file = req.files.images;
   const fileName = file.name;
   const tempPath = `${UPLOAD_TEMP_PATH}/${fileName}`;
-
   file.mv(tempPath, (err) => {
       if (err) {
           console.error(err);
