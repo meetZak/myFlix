@@ -54,8 +54,6 @@ app.post('/images', (req, res) => {
   const fileName = req.files.image.name
   const tempPath = `${UPLOAD_TEMP_PATH}/${fileName}`
   file.mv(tempPath, (err) => { res.status(500) })
-
-  
 })
 
 
