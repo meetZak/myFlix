@@ -10,7 +10,6 @@ const path = require("path");
 const fileUpload = require('express-fileupload')
 
 
-
 const Movies = Models.Movie;
 const Users = Models.User;
 
@@ -21,55 +20,141 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Importing the express-validator library into file.
 const { check, validationResult } = require ('express-validator');
 
-// import a handful of classes from the AWS SDK: the S3 client, as well as commands to list and put objects.
-const { S3Client, ListObjectsV2Command, PutObjectCommand } = require('@aws-sdk/client-s3')
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//super secret configuration
+require('dotenv').config();
 
-// Passing the region , endpoint URL and set another parameter
+//multer, for file processing
+const multer = require('multer');
+
+//AWS SDK import
+const {
+  S3Client,
+  ListObjectsV2Command,
+  PutObjectCommand,
+} = require('@aws-sdk/client-s3');
+
+//Variables required for s3 client
+const region = 'us-east-1';
+const bucketName = 'ec2tos3bucket';
+const accessKey = process.env.ACCESS_KEY;
+const secret = process.env.SECRET_ACCESS_KEY;
+
+//Creates new S3 client to pass to localstack
 const s3Client = new S3Client({
+  credentials: {
+    accessKeyId: accessKey,
+    secretAccessKey: secret,
+  },
   region: 'us-east-1',
-  forcePathStyle: true
-})
+});
 
-
-//instantiating objects from the classes for individual commands.
+//used to pass our bucket name to functions
+//my-cool-local-bucket
 const listObjectsParams = {
-  Bucket: 'ec2tos3bucket'
-}
+  Bucket: bucketName,
+};
 
-listObjectsCmd = new ListObjectsV2Command(listObjectsParams)
+//declares a variable to hold our command which then lists the objects from our bucket given by params
+listObjectsCmd = new ListObjectsV2Command(listObjectsParams);
 
+// Multer middleware for handling file uploads
+const upload = multer({ dest: 'uploads/' });
 
-//creating an endpoint in Express that’s a passthrough to list the objects in a bucket
+//passes the listObjectsCmd to our s3Client object
+s3Client.send(listObjectsCmd);
+
+//endpoints
 app.get('/images', (req, res) => {
+  s3Client
+    .send(new ListObjectsV2Command(listObjectsParams))
+    .then((listObjectsResponse) => {
+      res.send(listObjectsResponse);
+    });
+});
 
-  s3Client.send(new ListObjectsV2Command(listObjectsParams))
-      .then((listObjectsResponse) => {
-          res.send(listObjectsResponse)
-  })
-})
-
-//POST request sent to /images
-app.post('/images', (req, res) => {
-  if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send('No files were uploaded.');
+//upload files
+/* Multer is going to take our file and run it through the single middleware, then populating our req
+parameter with the processed upload file, which allows us to access certain keys within the object, such as path or file */
+app.post('/images', upload.single('image'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file was chosen for upload' });
   }
 
-  const file = req.files.image;
-  const fileName = file.name;
-  const tempPath = `${UPLOAD_TEMP_PATH}/${fileName}`;
+  const file = req.file;
+  const appliedKey = 'original-image/' + file.originalname;
 
-  file.mv(tempPath, (err) => {
-      if (err) {
-          console.error(err);
-          return res.status(500).send('Internal Server Error');
-      }
+  //debugging catches just in case
+  console.log(file);
+  console.log(file.path);
 
-      // File successfully uploaded
-      res.status(200).send('File uploaded!');
-  });
+  try {
+    //creates temporary read path to the file
+    const stream = fs.createReadStream(file.path);
+
+    const params = {
+      Bucket: bucketName,
+      Key: appliedKey,
+      Body: stream,
+    };
+
+    await s3Client.send(new PutObjectCommand(params));
+    //if successful
+    return res.status(200).json({ message: 'File successfully uploaded' });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Upload Failed' });
+  } finally {
+    fs.unlinkSync(file.path);
+  }
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // Passing the region , endpoint URL and set another parameter
+// const s3Client = new S3Client({
+//   region: 'us-east-1',
+//   forcePathStyle: true
+// })
+
+
+// //instantiating objects from the classes for individual commands.
+// const listObjectsParams = {
+//   Bucket: 'ec2tos3bucket'
+// }
+
+// listObjectsCmd = new ListObjectsV2Command(listObjectsParams)
+
+
+// //creating an endpoint in Express that’s a passthrough to list the objects in a bucket
+// app.get('/images', (req, res) => {
+
+//   s3Client.send(new ListObjectsV2Command(listObjectsParams))
+//       .then((listObjectsResponse) => {
+//           res.send(listObjectsResponse)
+//   })
+// })
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Importing auth.js and requiring Passport Module into the project.
 const cors = require('cors');
