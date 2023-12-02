@@ -24,6 +24,8 @@ const { check, validationResult } = require ('express-validator');
 //super secret configuration
 require('dotenv').config();
 
+
+
 //multer, for file processing
 const multer = require('multer');
 
@@ -39,6 +41,7 @@ const region = 'us-east-1';
 const bucketName = 'ec2tos3bucket';
 const accessKey = process.env.ACCESS_KEY;
 const secret = process.env.SECRET_ACCESS_KEY;
+console.log (accessKey)
 
 //Creates new S3 client to pass to localstack
 const s3Client = new S3Client({
