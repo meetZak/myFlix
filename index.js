@@ -38,17 +38,17 @@ const {
 
 //Variables required for s3 client
 const region = 'us-east-1';
-const bucketName = 'ec2tos3bucket';
+const bucketName = 'zack-lambda-bucket';
 const accessKey = process.env.ACCESS_KEY;
 const secret = process.env.SECRET_ACCESS_KEY;
 console.log (accessKey)
 
 //Creates new S3 client to pass to localstack
 const s3Client = new S3Client({
-  credentials: {
-    accessKeyId: accessKey,
-    secretAccessKey: secret,
-  },
+  // credentials: {
+  //   accessKeyId: accessKey,
+  //   secretAccessKey: secret,
+  // },
   region: 'us-east-1',
 });
 
@@ -113,49 +113,6 @@ app.post('/images', upload.single('image'), async (req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // Passing the region , endpoint URL and set another parameter
-// const s3Client = new S3Client({
-//   region: 'us-east-1',
-//   forcePathStyle: true
-// })
-
-
-// //instantiating objects from the classes for individual commands.
-// const listObjectsParams = {
-//   Bucket: 'ec2tos3bucket'
-// }
-
-// listObjectsCmd = new ListObjectsV2Command(listObjectsParams)
-
-
-// //creating an endpoint in Express that’s a passthrough to list the objects in a bucket
-// app.get('/images', (req, res) => {
-
-//   s3Client.send(new ListObjectsV2Command(listObjectsParams))
-//       .then((listObjectsResponse) => {
-//           res.send(listObjectsResponse)
-//   })
-// })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
