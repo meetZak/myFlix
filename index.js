@@ -4,7 +4,7 @@ const express = require("express");
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 const uuid = require("uuid");
-const morgan = require("morgan");
+//const morgan = require("morgan");
 const fs = require("fs");
 const path = require("path");
 const fileUpload = require('express-fileupload')
@@ -141,7 +141,7 @@ require ('./passport');
 mongoose.connect( 'mongodb+srv://abuyahya:abuyusra@ourflixdb.aocjkw6.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true });
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
  
-app.use(morgan('common', {stream: accessLogStream}));
+//app.use(morgan('common', {stream: accessLogStream}));
 app.use(express.static('public'));
 
 
