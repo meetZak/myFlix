@@ -132,7 +132,7 @@ app.use(cors());
  }));  
 let auth = require('./auth')(app);
 const passport = require ('passport');
-const { S3 } = require("aws-sdk");
+//const { S3 } = require("aws-sdk");
 const { error } = require("console");
 require ('./passport');
 
