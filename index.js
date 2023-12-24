@@ -4,7 +4,7 @@ const express = require("express");
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 const uuid = require("uuid");
-//const morgan = require("morgan");
+const morgan = require("morgan");
 const fs = require("fs");
 const path = require("path");
 const fileUpload = require('express-fileupload')
@@ -45,10 +45,10 @@ console.log (accessKey)
 
 //Creates new S3 client to pass to localstack
 const s3Client = new S3Client({
-  // credentials: {
-  //   accessKeyId: accessKey,
-  //   secretAccessKey: secret,
-  // },
+  credentials: {
+    accessKeyId: accessKey,
+    secretAccessKey: secret,
+  },
   region: 'us-east-1',
 });
 
@@ -114,6 +114,49 @@ app.post('/images', upload.single('image'), async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // Passing the region , endpoint URL and set another parameter
+// const s3Client = new S3Client({
+//   region: 'us-east-1',
+//   forcePathStyle: true
+// })
+
+
+// //instantiating objects from the classes for individual commands.
+// const listObjectsParams = {
+//   Bucket: 'ec2tos3bucket'
+// }
+
+// listObjectsCmd = new ListObjectsV2Command(listObjectsParams)
+
+
+// //creating an endpoint in Express that’s a passthrough to list the objects in a bucket
+// app.get('/images', (req, res) => {
+
+//   s3Client.send(new ListObjectsV2Command(listObjectsParams))
+//       .then((listObjectsResponse) => {
+//           res.send(listObjectsResponse)
+//   })
+// })
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Importing auth.js and requiring Passport Module into the project.
@@ -132,7 +175,7 @@ app.use(cors());
  }));  
 let auth = require('./auth')(app);
 const passport = require ('passport');
-//const { S3 } = require("aws-sdk");
+const { S3 } = require("aws-sdk");
 const { error } = require("console");
 require ('./passport');
 
@@ -141,7 +184,7 @@ require ('./passport');
 mongoose.connect( 'mongodb+srv://abuyahya:abuyusra@ourflixdb.aocjkw6.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true });
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
  
-//app.use(morgan('common', {stream: accessLogStream}));
+app.use(morgan('common', {stream: accessLogStream}));
 app.use(express.static('public'));
 
 
