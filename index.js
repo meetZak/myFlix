@@ -119,7 +119,7 @@ app.post('/images', upload.single('image'), async (req, res) => {
 // Importing auth.js and requiring Passport Module into the project.
 const cors = require('cors');
 app.use(cors());
-  let allowedOrigins = ['http://localhost:8080','https://zaflix.herokuapp.com/','http://localhost:1234','https://myflixmovie-app.netlify.app/login','http://myflix-client.s3-website-us-east-1.amazonaws.com/login','http://myflix-client.s3-website-us-east-1.amazonaws.com/signup'];
+  let allowedOrigins = ['http://localhost:8080','https://zaflix.herokuapp.com/','http://localhost:1234','https://myflixmovie-app.netlify.app/login','http://myflix-client.s3-website-us-east-1.amazonaws.com/login','http://myflix-client.s3-website-us-east-1.amazonaws.com/signup','http://zack-lambda-bucket.s3-website-us-east-1.amazonaws.com/'];
  app.use(cors({
   origin: (origin, callback) => {
     if(!origin) return callback(null, true);
